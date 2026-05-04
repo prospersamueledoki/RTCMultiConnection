@@ -294,7 +294,8 @@ httpApp = httpApp.listen(process.env.PORT || PORT, process.env.IP || "0.0.0.0", 
 
 const io = ioServer(httpApp, {
     cors: {
-        origin: "https://plumuxstudio.vercel.app", // Allow your Vercel site
+        // origin: "https://plumuxstudio.vercel.app", // Allow your Vercel site
+        origin: "*", // Allow your Vercel site
         methods: ["GET", "POST"],
         credentials: true
     },
