@@ -273,12 +273,39 @@ httpApp = httpApp.listen(process.env.PORT || PORT, process.env.IP || "0.0.0.0", 
 // --------------------------
 // socket.io codes goes below
 
-ioServer(httpApp).on('connection', function(socket) {
+// ioServer(httpApp).on('connection', function(socket) {
+//     RTCMultiConnectionServer.addSocket(socket, config);
+
+//     // ----------------------
+//     // below code is optional
+
+//     const params = socket.handshake.query;
+
+//     if (!params.socketCustomEvent) {
+//         params.socketCustomEvent = 'custom-message';
+//     }
+
+//     socket.on(params.socketCustomEvent, function(message) {
+//         socket.broadcast.emit(params.socketCustomEvent, message);
+//     });
+// });
+// --------------------------
+// socket.io codes goes below (UPDATED FOR CORS)
+
+const io = ioServer(httpApp, {
+    cors: {
+        origin: "https://plumuxstudio.vercel.app", // Allow your Vercel site
+        methods: ["GET", "POST"],
+        credentials: true
+    },
+    allowEIO3: true // Crucial for RTCMultiConnection compatibility
+});
+
+io.on('connection', function(socket) {
     RTCMultiConnectionServer.addSocket(socket, config);
 
     // ----------------------
     // below code is optional
-
     const params = socket.handshake.query;
 
     if (!params.socketCustomEvent) {
